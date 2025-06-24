@@ -1,0 +1,43 @@
+package templates
+
+templ EventForm() {
+	@Base("Checkin") {
+		<h1>Criar Evento</h1>
+		<form
+			hx-post="/events"
+			hx-target="#resposta"
+			hx-swap="innerHTML"
+		>
+			<label>
+				Nome:
+				<br/>
+				<input type="text" name="nome" required/>
+			</label>
+			<br/>
+			<br/>
+			<label>
+				Localização:
+				<br/>
+				<input type="text" name="localizacao" required/>
+			</label>
+			<br/>
+			<br/>
+			<label>
+				Início:
+				<br/>
+				<input type="datetime-local" name="inicio" required/>
+			</label>
+			<br/>
+			<br/>
+			<label>
+				Fim:
+				<br/>
+				<input type="datetime-local" name="fim" required/>
+			</label>
+			<br/>
+			<br/>
+			<button type="submit">Salvar</button>
+		</form>
+		<div id="resposta"></div>
+	}
+}
