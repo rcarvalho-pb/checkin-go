@@ -9,6 +9,7 @@ import (
 )
 
 var dbTimeout = 10 * time.Second
+var DSN string
 
 type DB struct {
 	*sqlx.DB
@@ -16,6 +17,7 @@ type DB struct {
 
 func GetDB(dsn string) *DB {
 	db := connectToDB(dsn)
+	DSN = dsn
 	if db == nil {
 		log.Fatal("couldn`t connect to DB")
 	}
