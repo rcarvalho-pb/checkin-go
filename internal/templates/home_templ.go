@@ -8,7 +8,7 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func (t *TemplateHandler) eventForm() templ.Component {
+func (t *TemplateHandler) home() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -41,13 +41,13 @@ func (t *TemplateHandler) eventForm() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<h1>Criar Evento</h1><form hx-post=\"#\" hx-target=\"#resposta\" hx-swap=\"innerHTML\"><label>Nome:<br><input type=\"text\" name=\"nome\" required></label><br><br><label>Localização:<br><input type=\"text\" name=\"localizacao\" required></label><br><br><label>Início:<br><input type=\"datetime-local\" name=\"inicio\" required></label><br><br><label>Fim:<br><input type=\"datetime-local\" name=\"fim\" required></label><br><br><button type=\"submit\">Salvar</button></form><div id=\"resposta\"></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<h1>Sistema de Check-in</h1><p>Seja Bem Vindo! Aqui você poderá fazer o seu check-in.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = t.base("Checkin").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = t.base("Chek-in").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

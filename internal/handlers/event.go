@@ -6,6 +6,10 @@ import (
 	"github.com/rcarvalho-pb/checkin-go/internal/templates"
 )
 
-func CreateEvent(w http.ResponseWriter, r *http.Request) {
+func CreateEventPage(w http.ResponseWriter, r *http.Request) {
 	templates.EventForm().Render(r.Context(), w)
+}
+
+func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
+
 }

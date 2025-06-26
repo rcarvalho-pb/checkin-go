@@ -5,6 +5,10 @@ import (
 )
 
 type Migrator interface {
-	RunMigrationsUP()
+	RunMigrationsUp()
+}
+
+func RunMigrationsUp(m Migrator) {
+	m.RunMigrationsUp()
 }
 

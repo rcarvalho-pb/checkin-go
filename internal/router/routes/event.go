@@ -10,7 +10,7 @@ var EventRoutes = []Route{
 	{
 		Uri:            "/",
 		Method:         http.MethodGet,
-		Function:       handlers.CreateEvent,
+		Function:       handlers.CreateEventPage,
 		Authentication: false,
 		Admin:          false,
 	},

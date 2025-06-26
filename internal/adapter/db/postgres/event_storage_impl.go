@@ -11,16 +11,11 @@ type eventStorage struct {
 	*DB
 }
 
-func NewEventStore(db *DB) *eventStorage {
+func NewEventStorage(db *DB) *eventStorage {
 	return &eventStorage{
 		db,
 	}
 }
-
-// Create(context.Context, *event.Event) (int, error)
-// List(context.Context) ([]*event.Event, error)
-// FindById(context.Context, int) (*event.Event, error)
-// DeleteById(context.Context, int) error
 
 func (es *eventStorage) Create(ctx context.Context, e *event.Event) (int, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
@@ -51,7 +46,7 @@ func (es *eventStorage) List(ctx context.Context) ([]*event.Event, error) {
 	defer cancel()
 	query := `
 	SELECT * FROM
-		participants;
+		events;
 	`
 	var events []*event.Event
 	if err := es.SelectContext(ctx, &events, query); err != nil {
@@ -61,5 +56,32 @@ func (es *eventStorage) List(ctx context.Context) ([]*event.Event, error) {
 }
 
 func (es *eventStorage) FindById(ctx context.Context, id int) (*event.Event, error) {
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+	query := `
+	SELECT * FROM
+		events
+	WHERE 
+		id = :id;
+	`
+	var event *event.Event
+	if err := es.GetContext(ctx, &event, query, id); err != nil {
+		return nil, err
+	}
+	return event, nil
+}
 
+func (es *eventStorage) DeleteById(ctx context.Context, id int) error {
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+	stmt := `
+	DELETE from
+		events
+	WHERE
+	 id = :id;
+	`
+	if _, err := es.ExecContext(ctx, stmt, id); err != nil {
+		return err
+	}
+	return nil
 }
