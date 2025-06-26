@@ -3,11 +3,7 @@ package templates
 templ EventForm() {
 	@Base("Checkin") {
 		<h1>Criar Evento</h1>
-		<form
-			hx-post="/events"
-			hx-target="#resposta"
-			hx-swap="innerHTML"
-		>
+		<form hx-post="#" hx-target="#resposta" hx-swap="innerHTML">
 			<label>
 				Nome:
 				<br/>
