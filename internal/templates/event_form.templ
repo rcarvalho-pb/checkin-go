@@ -1,7 +1,7 @@
 package templates
 
-templ EventForm() {
-	@Base("Checkin") {
+templ (t *TemplateHandler) eventForm() {
+	@t.base("Checkin") {
 		<h1>Criar Evento</h1>
 		<form hx-post="#" hx-target="#resposta" hx-swap="innerHTML">
 			<label>

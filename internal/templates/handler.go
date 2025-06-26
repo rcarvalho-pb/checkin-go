@@ -2,6 +2,8 @@ package templates
 
 import "net/http"
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	Home().Render(r.Context(), w)
+type TemplateHandler struct{}
+
+func (t *TemplateHandler) HomeHandler(w http.ResponseWriter, r *http.Request) {
+	t.home().Render(r.Context(), w)
 }

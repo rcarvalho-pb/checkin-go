@@ -1,7 +1,7 @@
 package templates
 
-templ Home() {
-	@Base("Chek-in") {
+templ (t *TemplateHandler) home() {
+	@t.base("Chek-in") {
 		<h1>Sistema de Check-in</h1>
 		<p>Seja Bem Vindo! Aqui você poderá fazer o seu check-in.</p>
 	}
