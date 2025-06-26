@@ -3,6 +3,8 @@ package routes
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/rcarvalho-pb/checkin-go/internal/config"
 )
 
 type Route struct {
@@ -13,9 +15,10 @@ type Route struct {
 	Admin          bool
 }
 
-func Config(r *http.ServeMux) *http.ServeMux {
+func Config(r *http.ServeMux, app *config.App) *http.ServeMux {
+	fmt.Printf("%+v\n", app)
 	var routes []Route
-	routes = append(routes, EventRoutes...)
+	routes = append(routes, getEventRoutes(app)...)
 
 	for _, route := range routes {
 		if route.Authentication {

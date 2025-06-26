@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rcarvalho-pb/checkin-go/internal/participant"
+	"github.com/rcarvalho-pb/checkin-go/internal/model"
 )
 
 type participantStorage struct {
@@ -23,7 +23,7 @@ func NewParticipantStorage(db *DB) *participantStorage {
 	}
 }
 
-func (ps *participantStorage) Create(ctx context.Context, p *participant.Participant) (int, error) {
+func (ps *participantStorage) Create(ctx context.Context, p *model.Participant) (int, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	stmt := `
@@ -47,21 +47,21 @@ func (ps *participantStorage) Create(ctx context.Context, p *participant.Partici
 	return id, nil
 }
 
-func (ps *participantStorage) List(ctx context.Context) ([]*participant.Participant, error) {
+func (ps *participantStorage) List(ctx context.Context) ([]*model.Participant, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	query := `
 	SELECT * FROM
 		events;
 	`
-	var p []*participant.Participant
+	var p []*model.Participant
 	if err := ps.SelectContext(ctx, &p, query); err != nil {
 		return nil, fmt.Errorf("error selecting from events table: %w", err)
 	}
 	return p, nil
 }
 
-func (ps *participantStorage) FindById(ctx context.Context, id int) (*participant.Participant, error) {
+func (ps *participantStorage) FindById(ctx context.Context, id int) (*model.Participant, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	query := `
@@ -70,14 +70,14 @@ func (ps *participantStorage) FindById(ctx context.Context, id int) (*participan
 	WHERE 
 		id = :id;
 	`
-	var p *participant.Participant
+	var p *model.Participant
 	if err := ps.GetContext(ctx, &p, query, id); err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (ps *participantStorage) FindByEmail(ctx context.Context, email string) (*participant.Participant, error) {
+func (ps *participantStorage) FindByEmail(ctx context.Context, email string) (*model.Participant, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	query := `
@@ -86,7 +86,7 @@ func (ps *participantStorage) FindByEmail(ctx context.Context, email string) (*p
 	WHERE 
 		email = :email;
 	`
-	var p *participant.Participant
+	var p *model.Participant
 	if err := ps.GetContext(ctx, &p, query, email); err != nil {
 		return nil, err
 	}

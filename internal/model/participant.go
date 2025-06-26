@@ -1,4 +1,4 @@
-package participant
+package model
 
 import "time"
 

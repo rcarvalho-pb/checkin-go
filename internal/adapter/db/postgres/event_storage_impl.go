@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rcarvalho-pb/checkin-go/internal/event"
+	"github.com/rcarvalho-pb/checkin-go/internal/model"
 )
 
 type eventStorage struct {
@@ -17,7 +17,7 @@ func NewEventStorage(db *DB) *eventStorage {
 	}
 }
 
-func (es *eventStorage) Create(ctx context.Context, e *event.Event) (int, error) {
+func (es *eventStorage) Create(ctx context.Context, e *model.Event) (int, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	stmt := `
@@ -41,21 +41,21 @@ func (es *eventStorage) Create(ctx context.Context, e *event.Event) (int, error)
 	return id, nil
 }
 
-func (es *eventStorage) List(ctx context.Context) ([]*event.Event, error) {
+func (es *eventStorage) List(ctx context.Context) ([]*model.Event, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	query := `
 	SELECT * FROM
 		events;
 	`
-	var events []*event.Event
+	var events []*model.Event
 	if err := es.SelectContext(ctx, &events, query); err != nil {
 		return nil, fmt.Errorf("error selecting from events table: %w", err)
 	}
 	return events, nil
 }
 
-func (es *eventStorage) FindById(ctx context.Context, id int) (*event.Event, error) {
+func (es *eventStorage) FindById(ctx context.Context, id int) (*model.Event, error) {
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 	query := `
@@ -64,7 +64,7 @@ func (es *eventStorage) FindById(ctx context.Context, id int) (*event.Event, err
 	WHERE 
 		id = :id;
 	`
-	var event *event.Event
+	var event *model.Event
 	if err := es.GetContext(ctx, &event, query, id); err != nil {
 		return nil, err
 	}

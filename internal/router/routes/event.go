@@ -3,15 +3,17 @@ package routes
 import (
 	"net/http"
 
-	"github.com/rcarvalho-pb/checkin-go/internal/handlers"
+	"github.com/rcarvalho-pb/checkin-go/internal/config"
 )
 
-var EventRoutes = []Route{
-	{
-		Uri:            "/",
-		Method:         http.MethodGet,
-		Function:       handlers.CreateEventPage,
-		Authentication: false,
-		Admin:          false,
-	},
+func getEventRoutes(app *config.App) []Route {
+	return []Route{
+		{
+			Uri:            "/",
+			Method:         http.MethodGet,
+			Function:       app.TemplateHandler.CreateEventPage,
+			Authentication: false,
+			Admin:          false,
+		},
+	}
 }

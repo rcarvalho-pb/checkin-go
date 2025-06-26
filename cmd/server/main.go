@@ -7,30 +7,26 @@ import (
 	"os"
 
 	"github.com/rcarvalho-pb/checkin-go/internal/adapter/db/postgres"
-<<<<<<< HEAD
-=======
 	"github.com/rcarvalho-pb/checkin-go/internal/config"
-	"github.com/rcarvalho-pb/checkin-go/internal/event"
-	"github.com/rcarvalho-pb/checkin-go/internal/participant"
->>>>>>> d26c2a609706da1ce09d0a10f63584de2cab9b15
+	"github.com/rcarvalho-pb/checkin-go/internal/handler"
 	"github.com/rcarvalho-pb/checkin-go/internal/router"
-	"github.com/rcarvalho-pb/checkin-go/internal/storage"
+	"github.com/rcarvalho-pb/checkin-go/internal/templates"
 )
 
 const webPort = 8080
-
-var migrator storage.Migrator
 
 func main() {
 	dsn := os.Getenv("DSN")
 	db := postgres.GetDB(dsn)
 	eventSt := postgres.NewEventStorage(db)
 	participantSt := postgres.NewParticipantStorage(db)
-	app := config.App{
-		EventHandler:       event.NewEventHandler(eventSt),
-		ParticipantHandler: participant.NewParticipantHandler(participantSt),
+	app := &config.App{
+		EventHandler:       handler.NewEventHandler(eventSt),
+		ParticipantHandler: handler.NewParticipantHandler(participantSt),
+		TemplateHandler:    &templates.TemplateHandler{},
 	}
-	r := router.GetRouter()
+	app.RunMigrationsUp(db)
+	r := router.GetRouter(app)
 	fmt.Printf("Server started on port: %d\n", webPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", webPort), r))
 }

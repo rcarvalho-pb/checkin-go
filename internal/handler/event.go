@@ -1,16 +1,19 @@
-package event
+package handler
 
 import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/rcarvalho-pb/checkin-go/internal/model"
+	"github.com/rcarvalho-pb/checkin-go/internal/storage"
 )
 
 type EventHandler struct {
-	es eventStorage
+	es storage.EventStorage
 }
 
-func NewEventHandler(e eventStorage) *EventHandler {
+func NewEventHandler(e storage.EventStorage) *EventHandler {
 	return &EventHandler{
 		e,
 	}
@@ -26,7 +29,7 @@ func (h *EventHandler) CreateEvent(w http.ResponseWriter, r *http.Request) {
 	startsAt, _ := time.Parse("2006-01-02T15:04", r.FormValue("starts_at"))
 	endsAt, _ := time.Parse("2006-01-02T15:04", r.FormValue("ends_at"))
 
-	event := Event{
+	event := model.Event{
 		Name:     name,
 		Location: location,
 		StartsAt: startsAt,

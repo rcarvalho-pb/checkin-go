@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/rcarvalho-pb/checkin-go/internal/event"
-	"github.com/rcarvalho-pb/checkin-go/internal/participant"
+	"github.com/rcarvalho-pb/checkin-go/internal/handler"
+	"github.com/rcarvalho-pb/checkin-go/internal/templates"
 )
 
 type Migrator interface {
@@ -10,8 +10,9 @@ type Migrator interface {
 }
 
 type App struct {
-	EventHandler       *event.EventHandler
-	ParticipantHandler *participant.ParticipantHandler
+	EventHandler       *handler.EventHandler
+	ParticipantHandler *handler.ParticipantHandler
+	TemplateHandler    *templates.TemplateHandler
 }
 
 func (app *App) RunMigrationsUp(m Migrator) {

@@ -1,0 +1,57 @@
+package templates
+
+import "github.com/rcarvalho-pb/checkin-go/internal/event"
+
+templ (t *TemplateHandler) EventList(events []event.Event) {
+	<html>
+		<head>
+			<title>Eventos</title>
+		</head>
+		<body>
+			<h1>Lista de Eventos</h1>
+			<section id="events-list">
+				<ul>
+					for _, e := range events {
+						<li>
+							<strong>{ e.Name }</strong> - { e.Location }
+							<br/>
+							Início: { e.StartsAt.String() }
+							<br/>
+							Fim: { e.EndsAt.String() }
+						</li>
+					}
+				</ul>
+			</section>
+			<section id="event-form">
+				<h2>Criar Novo Evento</h2>
+				<form hx-post="/events" hx-target="#events-list" hx-swap="outerHTML">
+					<label>
+						Nome:
+						<br/>
+						<input name="name" required/>
+					</label>
+					<br/>
+					<label>
+						Local:
+						<br/>
+						<input name="location"/>
+					</label>
+					<br/>
+					<label>
+						Início (RFC3339):
+						<br/>
+						<input name="starts_at" type="datetime-local" required/>
+					</label>
+					<br/>
+					<label>
+						Fim (RFC3339):
+						<br/>
+						<input name="ends_at" type="datetime-local" required/>
+					</label>
+					<br/>
+					<button type="submit">Criar</button>
+				</form>
+			</section>
+		</body>
+	</html>
+}

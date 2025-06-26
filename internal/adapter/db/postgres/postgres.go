@@ -13,7 +13,6 @@ import (
 )
 
 var dbTimeout = 10 * time.Second
-var DSN string
 
 var DSN string
 
