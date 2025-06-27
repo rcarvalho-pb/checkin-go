@@ -23,10 +23,10 @@ func main() {
 	app := &config.App{
 		EventHandler:       handler.NewEventHandler(eventSt),
 		ParticipantHandler: handler.NewParticipantHandler(participantSt),
-		TemplateHandler:    &templates.TemplateHandler{},
+		TemplateHandler:    templates.NewTemplateHandler(),
 	}
 	app.RunMigrationsUp(db)
 	r := router.GetRouter(app)
-	fmt.Printf("Server started on port: %d\n", webPort)
+	log.Printf("Server started on port: %d\n", webPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", webPort), r))
 }

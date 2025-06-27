@@ -16,7 +16,6 @@ type Route struct {
 }
 
 func Config(r *http.ServeMux, app *config.App) *http.ServeMux {
-	fmt.Printf("%+v\n", app)
 	var routes []Route
 	routes = append(routes, getEventRoutes(app)...)
 	routes = append(routes, getParticipantRoutes(app)...)

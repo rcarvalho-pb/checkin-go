@@ -11,6 +11,13 @@ func getEventRoutes(app *config.App) []Route {
 		{
 			Uri:            "/",
 			Method:         http.MethodGet,
+			Function:       app.TemplateHandler.HomeHandler,
+			Authentication: false,
+			Admin:          false,
+		},
+		{
+			Uri:            "/events",
+			Method:         http.MethodGet,
 			Function:       app.TemplateHandler.CreateEventPage,
 			Authentication: false,
 			Admin:          false,

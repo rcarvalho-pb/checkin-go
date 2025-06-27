@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -28,5 +27,5 @@ func (migrator *Migrator) RunMigrationsUP() {
 	if err = m.Up(); err != nil && err != migrate.ErrNoChange {
 		log.Fatalf("error running migrations: %v", err)
 	}
-	fmt.Println("migrations successfully applied")
+	log.Println("migrations successfully applied")
 }
