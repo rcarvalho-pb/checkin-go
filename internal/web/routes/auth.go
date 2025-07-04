@@ -12,7 +12,13 @@ func GetAuthRoutes(app ...*config.App) []Route {
 		{
 			URI:            "/login",
 			Method:         http.MethodPost,
-			Function:       auth.Login(app[0]),
+			Function:       auth.Login,
+			Authentication: false,
+		},
+		{
+			URI:            "/signup",
+			Method:         http.MethodPost,
+			Function:       auth.SignUp,
 			Authentication: false,
 		},
 	}

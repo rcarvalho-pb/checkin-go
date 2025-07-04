@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/rcarvalho-pb/checkin-go/internal/helper"
 	"github.com/rcarvalho-pb/checkin-go/internal/participant"
 )
@@ -11,6 +13,8 @@ var (
 
 type App struct {
 	participant.ParticipantRepository
+	InfoLog  log.Logger
+	ErrorLog log.Logger
 }
 
 type Migrator interface {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/rcarvalho-pb/checkin-go/internal/adapter/db"
 	"github.com/rcarvalho-pb/checkin-go/internal/config"
@@ -15,6 +16,7 @@ const webPort = "8080"
 func main() {
 	config.StartApp()
 	dbPool := db.GetDB(config.DBType, config.DSN)
+	infoLog := log.New(os.Stdout, "INFO: ")
 	app := *&config.App{
 		ParticipantRepository: dbPool,
 	}
