@@ -8,6 +8,7 @@ import (
 
 	"github.com/rcarvalho-pb/checkin-go/internal/adapter/db"
 	"github.com/rcarvalho-pb/checkin-go/internal/config"
+	"github.com/rcarvalho-pb/checkin-go/internal/globals"
 	"github.com/rcarvalho-pb/checkin-go/internal/web"
 )
 
@@ -15,14 +16,17 @@ const webPort = "8080"
 
 func main() {
 	config.StartApp()
-	dbPool := db.GetDB(config.DBType, config.DSN)
-	infoLog := log.New(os.Stdout, "INFO: ")
-	app := *&config.App{
+	dbPool := db.GetDB(globals.DBType, globals.DSN)
+	infoLog := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog := log.New(os.Stdout, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
+	app := &config.App{
 		ParticipantRepository: dbPool,
+		InfoLog:               infoLog,
+		ErrorLog:              errorLog,
 	}
-	r := web.StartRouter()
-	log.Printf("Server started on port: %s", webPort)
+	r := web.StartRouter(app)
+	app.InfoLog.Printf("Server started on port: %s", webPort)
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", webPort), r); err != nil {
-		log.Fatal(err)
+		app.ErrorLog.Fatal(err)
 	}
 }

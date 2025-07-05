@@ -3,18 +3,21 @@ package config
 import (
 	"log"
 
+	"github.com/rcarvalho-pb/checkin-go/internal/auth"
+	"github.com/rcarvalho-pb/checkin-go/internal/event"
+	"github.com/rcarvalho-pb/checkin-go/internal/globals"
 	"github.com/rcarvalho-pb/checkin-go/internal/helper"
 	"github.com/rcarvalho-pb/checkin-go/internal/participant"
 )
 
-var (
-	Secret, DBType, DSN string
-)
+var ()
 
 type App struct {
 	participant.ParticipantRepository
-	InfoLog  log.Logger
-	ErrorLog log.Logger
+	event.EventRepository
+	AuthHandler *auth.AuthHandler
+	InfoLog     *log.Logger
+	ErrorLog    *log.Logger
 }
 
 type Migrator interface {
@@ -26,7 +29,7 @@ func (app *App) RunMigrationsUp(dsn string, m Migrator) {
 }
 
 func StartApp() {
-	Secret = helper.GetEnvWithCallback("SECRET", "verysecret")
-	DBType = helper.GetEnvWithCallback("DB_TYPE", "sqlite")
-	DSN = helper.GetEnvWithCallback("DSN", "../db-data/sqlite/sqlite.db")
+	globals.Secret = helper.GetEnvWithCallback("SECRET", "verysecret")
+	globals.DBType = helper.GetEnvWithCallback("DB_TYPE", "sqlite")
+	globals.DSN = helper.GetEnvWithCallback("DSN", "../db-data/sqlite/sqlite.db")
 }

@@ -3,22 +3,21 @@ package routes
 import (
 	"net/http"
 
-	"github.com/rcarvalho-pb/checkin-go/internal/auth"
-	"github.com/rcarvalho-pb/checkin-go/internal/config"
+	"github.com/rcarvalho-pb/checkin-go/internal/web/handlers"
 )
 
-func GetAuthRoutes(app ...*config.App) []Route {
+func getAuthRoutes() []Route {
 	return []Route{
 		{
 			URI:            "/login",
 			Method:         http.MethodPost,
-			Function:       auth.Login,
+			Function:       handlers.Login,
 			Authentication: false,
 		},
 		{
 			URI:            "/signup",
 			Method:         http.MethodPost,
-			Function:       auth.SignUp,
+			Function:       handlers.SignUp,
 			Authentication: false,
 		},
 	}

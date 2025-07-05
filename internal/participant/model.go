@@ -13,8 +13,8 @@ type Participant struct {
 	Password  string                `json:"password,omitempty"`
 	Active    bool                  `json:"active,omitempty"`
 	Role      participant_role.Role `json:"role"`
-	CreatedAt time.Time             `json:"created_at"`
-	UpdatedAt time.Time             `json:"updated_at"`
+	CreatedAt time.Time             `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time             `json:"updated_at" db:"updated_at"`
 }
 
 type ParticipantRepository interface {

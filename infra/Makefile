@@ -1,5 +1,5 @@
 APP_NAME=checkin
-CMD_DIR=cmd/server
+CMD_DIR=cmd/smartcheckin
 MIGRATIONS_DIR=migrations
 DB_TYPE=postgres
 DSN=postgres://postgres:postgres@localhost:5432/checkin?sslmode=disable
@@ -16,7 +16,7 @@ build:
 
 run: stop build
 	@go tool templ generate
-	@export DSN=${DB_DSN} && ../bin/${APP_NAME} &
+	@export SECRET=${SECRET} DSN=${DSN} DB_TYPE=${DB_TYPE} && ../bin/${APP_NAME} &
 
 stop:
 	@-pkill -SIGTERM -f "${APP_NAME}"

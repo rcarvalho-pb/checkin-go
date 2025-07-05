@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/jmoiron/sqlx"
@@ -59,13 +60,14 @@ func (pp *PostgresParticipant) FindByEmail(email string) (*participant.Participa
 	SELECT * FROM
 		participants
 	WHERE
-		email = :email;
+		email = $1
 	`
-	var p *participant.Participant
-	if err := pp.GetContext(ctx, p, query, email); err != nil {
+	var p participant.Participant
+	if err := pp.GetContext(ctx, &p, query, email); err != nil {
+		fmt.Println(err.Error())
 		return nil, err
 	}
-	return p, nil
+	return &p, nil
 }
 
 func (pp *PostgresParticipant) Update(p *participant.Participant) error {

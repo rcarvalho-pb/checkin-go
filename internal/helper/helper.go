@@ -1,10 +1,12 @@
 package helper
 
-import "os"
+import (
+	"os"
+)
 
 func GetEnvWithCallback(envVar, callback string) string {
 	env := os.Getenv(envVar)
-	if env == "" {
+	if env != "" {
 		return env
 	} else {
 		return callback

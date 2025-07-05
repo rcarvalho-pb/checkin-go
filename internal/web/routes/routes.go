@@ -16,13 +16,15 @@ type Route struct {
 
 func ConfigRoutes(mux *http.ServeMux, app *config.App) *http.ServeMux {
 	routes := []Route{}
-	routes = append(routes, GetHeathRoutes()...)
-	routes = append(routes, GetAuthRoutes(app)...)
+	routes = append(routes, getHeathRoutes()...)
+	routes = append(routes, getAuthRoutes()...)
+	routes = append(routes, getParticipantsRoutes()...)
+	routes = append(routes, getEventRoutes()...)
 	for _, r := range routes {
 		if r.Authentication {
-
+			mux.HandleFunc(fmt.Sprintf("%s %s", r.Method, r.URI), app.AuthHandler.LoggerMiddleware(app.AuthHandler.AuthMiddleware(r.Function(app))))
 		} else {
-			mux.HandleFunc(fmt.Sprintf("%s %s", r.Method, r.URI), r.Function(app))
+			mux.HandleFunc(fmt.Sprintf("%s %s", r.Method, r.URI), app.AuthHandler.LoggerMiddleware(r.Function(app)))
 		}
 	}
 	return mux
