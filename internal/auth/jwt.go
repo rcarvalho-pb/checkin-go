@@ -57,12 +57,9 @@ func (a *AuthHandler) ValidateToken(r *http.Request) error {
 	if tokenString == "" {
 		return fmt.Errorf("validation: invalid token")
 	}
-	token, err := jwt.Parse(tokenString, getValidationKey)
+	_, err := jwt.Parse(tokenString, getValidationKey)
 	if err != nil {
 		return fmt.Errorf("validation: invalid token: %s", err.Error())
-	}
-	if _, ok := token.Claims.(*Claims); !ok || !token.Valid {
-		return fmt.Errorf("validation: invalid token: claims not ok")
 	}
 	return nil
 }
