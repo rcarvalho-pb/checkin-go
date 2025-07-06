@@ -2,7 +2,7 @@ CREATE TABLE event_participants (
     event_id INTEGER NOT NULL,
     participant_id INTEGER NOT NULL,
     checked_in BOOLEAN DEFAULT FALSE,
-    checkin_time TIMESTAMP,
+    checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (event_id, participant_id),
 

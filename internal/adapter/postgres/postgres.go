@@ -15,6 +15,11 @@ import (
 
 const dbTimeout = 10 * time.Second
 
+func GetRepositories(dsn string) (*PostgresParticipant, *PostgresEvent) {
+	db := connectToDB(dsn)
+	return &PostgresParticipant{db}, &PostgresEvent{db}
+}
+
 func connectToDB(dsn string) *sqlx.DB {
 	counts := 0
 	for {

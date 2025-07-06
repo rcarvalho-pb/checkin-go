@@ -10,28 +10,34 @@ import (
 	"github.com/rcarvalho-pb/checkin-go/internal/security"
 )
 
-func Login(app ...*config.App) http.HandlerFunc {
+func Login(app *config.App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if len(app) < 1 {
-			http.Error(w, "app not available", http.StatusInternalServerError)
-			return
-		}
+		// req := struct {
+		// 	Email    string `json:"email"`
+		// 	Password string `json:"password"`
+		// }{}
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, "invalid login or password", http.StatusBadRequest)
 			return
 		}
 		email := r.FormValue("email")
 		password := r.FormValue("password")
-		p, err := app[0].ParticipantRepository.FindByEmail(email)
+		// if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		// 	http.Error(w, "invalid login or password", http.StatusBadRequest)
+		// 	return
+		// }
+		p, err := app.ParticipantRepository.FindByEmail(email)
+		// p, err := app.ParticipantRepository.FindByEmail(req.Email)
 		if err != nil {
 			http.Error(w, "invalid login or password", http.StatusBadRequest)
 			return
 		}
 		if err := security.ValidatePassword(password, p.Password); err != nil {
+			// if err := security.ValidatePassword(req.Password, p.Password); err != nil {
 			http.Error(w, "invalid login or password", http.StatusBadRequest)
 			return
 		}
-		token, err := app[0].AuthHandler.NewJwtToken(p)
+		token, err := app.AuthHandler.NewJwtToken(p)
 		if err != nil {
 			http.Error(w, "error generating jwt token", http.StatusInternalServerError)
 			return
@@ -47,12 +53,8 @@ func Login(app ...*config.App) http.HandlerFunc {
 	}
 }
 
-func SignUp(app ...*config.App) http.HandlerFunc {
+func SignUp(app *config.App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if len(app) < 1 {
-			http.Error(w, "app not available", http.StatusInternalServerError)
-			return
-		}
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, "invalid input", http.StatusBadRequest)
 			return
@@ -74,11 +76,11 @@ func SignUp(app ...*config.App) http.HandlerFunc {
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
 		}
-		if err := app[0].ParticipantRepository.Create(p); err != nil {
+		if err := app.ParticipantRepository.Create(p); err != nil {
 			http.Error(w, "error creating participant:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
-		app[0].InfoLog.Println("user created successfuly")
+		app.InfoLog.Println("user created successfuly")
 		response := struct {
 			Status string `json:"status"`
 		}{

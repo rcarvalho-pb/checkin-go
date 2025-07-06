@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/rcarvalho-pb/checkin-go/internal/adapter/db"
 	"github.com/rcarvalho-pb/checkin-go/internal/config"
+	"github.com/rcarvalho-pb/checkin-go/internal/db"
 	"github.com/rcarvalho-pb/checkin-go/internal/globals"
 	"github.com/rcarvalho-pb/checkin-go/internal/web"
 )
@@ -20,7 +20,8 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 	errorLog := log.New(os.Stdout, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 	app := &config.App{
-		ParticipantRepository: dbPool,
+		ParticipantRepository: dbPool.ParticipantRepository,
+		EventRepository:       dbPool.EventRepository,
 		InfoLog:               infoLog,
 		ErrorLog:              errorLog,
 	}

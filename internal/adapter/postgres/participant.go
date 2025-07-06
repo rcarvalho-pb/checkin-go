@@ -13,12 +13,12 @@ type PostgresParticipant struct {
 	*sqlx.DB
 }
 
-func OpenDB(dsn string) participant.ParticipantRepository {
+func OpenDB(dsn string) *sqlx.DB {
 	conn := connectToDB(dsn)
 	if conn == nil {
 		log.Panic("can't connect to database")
 	}
-	return &PostgresParticipant{conn}
+	return conn
 }
 
 func (pp *PostgresParticipant) Create(p *participant.Participant) error {
@@ -44,9 +44,9 @@ func (pp *PostgresParticipant) FindByID(id int) (*participant.Participant, error
 	SELECT * FROM
 		participants
 	WHERE
-		id = :id;
+		id = $1;
 	`
-	var p *participant.Participant
+	p := &participant.Participant{}
 	if err := pp.GetContext(ctx, p, query, id); err != nil {
 		return nil, err
 	}
@@ -64,7 +64,6 @@ func (pp *PostgresParticipant) FindByEmail(email string) (*participant.Participa
 	`
 	var p participant.Participant
 	if err := pp.GetContext(ctx, &p, query, email); err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
 	return &p, nil

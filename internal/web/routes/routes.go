@@ -10,7 +10,7 @@ import (
 type Route struct {
 	URI            string
 	Method         string
-	Function       func(...*config.App) http.HandlerFunc
+	Function       func(*config.App) http.HandlerFunc
 	Authentication bool
 }
 

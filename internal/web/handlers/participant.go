@@ -11,16 +11,14 @@ import (
 	participant_role "github.com/rcarvalho-pb/checkin-go/internal/participant/roles"
 )
 
-func FindParticipatById(app ...*config.App) http.HandlerFunc {
+func FindParticipatById(app *config.App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Here")
 		id, err := strconv.Atoi(r.PathValue("id"))
 		if err != nil {
 			http.Error(w, "invalid user id", http.StatusBadRequest)
 			return
 		}
-		app[0].InfoLog.Println("find by id:", id)
-		p, err := app[0].ParticipantRepository.FindByID(id)
+		p, err := app.ParticipantRepository.FindByID(id)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error finding user: [%d]", id), http.StatusNotFound)
 			return
@@ -38,10 +36,11 @@ func FindParticipatById(app ...*config.App) http.HandlerFunc {
 	}
 }
 
-func Teste(app ...*config.App) http.HandlerFunc {
+func Teste(app *config.App) http.HandlerFunc {
+	_ = app
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.Context().Value(auth.UserIDKey)
-		name := r.Context().Value(auth.UserIDKey)
+		name := r.Context().Value(auth.UserNameKey)
 		email := r.Context().Value(auth.UserEmailKey)
 		role := r.Context().Value(auth.UserRoleKey)
 		response := struct {
